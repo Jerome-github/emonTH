@@ -35,7 +35,9 @@
   -------------------------------------------------------------------------------------------------------------
 */
 
-boolean debug=1;                                       //Set to 1 to few debug serial output, turning debug off increases battery life
+boolean debug=1;                                       // Set to 1 to few debug serial output, turning debug off increases battery life
+
+#define RF12_DATA_RATE RF12_DATA_RATE_7                // Set bitrate. Default is 7, which means 49200.
 
 #define RF_freq RF12_433MHZ                 // Frequency of RF12B module can be RF12_433MHZ, RF12_868MHZ or RF12_915MHZ. You should use the one matching the module you have.
 const int nodeID = 19;                               // EmonTH temperature RFM12B node ID - should be unique on network
@@ -96,6 +98,7 @@ void setup() {
   pinMode(LED,OUTPUT); digitalWrite(LED,HIGH);                       // Status LED on
    
   rf12_initialize(nodeID, RF_freq, networkGroup);                       // Initialize RFM12B
+  rf12_control(RF12_DATA_RATE);
   
   // Send RFM12B test sequence (for factory testing)
   for (int i=10; i>-1; i--)                                         
@@ -123,6 +126,16 @@ void setup() {
     if (RF_freq == RF12_433MHZ) Serial.print("433Mhz");
     if (RF_freq == RF12_868MHZ) Serial.print("868Mhz");
     if (RF_freq == RF12_915MHZ) Serial.print("915Mhz"); 
+    Serial.print(" Bitrate: "); 
+    if (RF12_DATA_RATE == RF12_DATA_RATE_9) Serial.print("115200 bps");
+    if (RF12_DATA_RATE == RF12_DATA_RATE_8) Serial.print("57600 bps");
+    if (RF12_DATA_RATE == RF12_DATA_RATE_7) Serial.print("49200 bps");
+    if (RF12_DATA_RATE == RF12_DATA_RATE_6) Serial.print("38400 bps");
+    if (RF12_DATA_RATE == RF12_DATA_RATE_5) Serial.print("19200 bps");
+    if (RF12_DATA_RATE == RF12_DATA_RATE_4) Serial.print("9600 bps");
+    if (RF12_DATA_RATE == RF12_DATA_RATE_3) Serial.print("4800 bps");
+    if (RF12_DATA_RATE == RF12_DATA_RATE_2) Serial.print("2400 bps");
+    if (RF12_DATA_RATE == RF12_DATA_RATE_1) Serial.print("1200 bps");
     Serial.print(" Network: "); 
     Serial.println(networkGroup);
     delay(100);
